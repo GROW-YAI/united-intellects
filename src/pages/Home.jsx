@@ -1,14 +1,51 @@
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+
+const images = [
+  {
+    src: "public/carousel1.webp",
+    caption: "Restoring Ghana's Rivers for a Sustainable Future",
+  },
+  {
+    src: "public/carousel2.webp",
+    caption: "Harnessing Clean Energy for a Greener Tomorrow",
+  },
+  {
+    src: "public/carousel3.webp",
+    caption: "Empowering Communities Through Conservation",
+  },
+];
+
 function Home() {
-    return (
-      <div className="text-center p-10 bg-blue-50 min-h-screen flex flex-col items-center justify-center">
-        <h1 className="text-4xl font-bold text-gray-900">Welcome to River Revive System</h1>
-        <p className="text-lg text-gray-700 mt-4">Restoring our rivers for a sustainable future.</p>
-        <button className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
-          Learn More
-        </button>
-      </div>
-    );
-  }
-  
-  export default Home;
-  
+  return (
+    <div className="w-full h-screen">
+      <Carousel
+        showThumbs={false}
+        autoPlay
+        infiniteLoop
+        interval={4000}
+        stopOnHover={false}
+        showStatus={false}
+      >
+        {images.map((image, index) => (
+          <div key={index} className="relative w-full h-screen">
+            <img
+              src={image.src}
+              alt={image.caption}
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                console.error("Failed to load image:", image.src);
+                e.target.src = "/assets/fallback.jpg"; // Optional fallback image
+              }}
+            />
+            <p className="absolute inset-0 flex items-center justify-center text-white text-3xl md:text-5xl font-extrabold bg-black bg-opacity-50 p-6 text-center">
+              {image.caption}
+            </p>
+          </div>
+        ))}
+      </Carousel>
+    </div>
+  );
+}
+
+export default Home;
