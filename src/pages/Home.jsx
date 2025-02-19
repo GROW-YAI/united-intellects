@@ -1,11 +1,21 @@
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import Benefits from "../components/Benefits";
+import Investment from "../components/Investments";
 
 const images = [
-  { src: "/carousel1.webp", caption: "Restoring Ghana's Rivers for a Sustainable Future" },
-  { src: "/carousel2.webp", caption: "Harnessing Clean Energy for a Greener Tomorrow" },
-  { src: "/carousel3.webp", caption: "Empowering Communities Through Conservation" },
+  {
+    src: "/carousel1.webp",
+    caption: "Restoring Ghana's Rivers for a Sustainable Future",
+  },
+  {
+    src: "/carousel2.webp",
+    caption: "Harnessing Clean Energy for a Greener Tomorrow",
+  },
+  {
+    src: "/carousel3.webp",
+    caption: "Empowering Communities Through Conservation",
+  },
 ];
 
 function Home() {
@@ -28,7 +38,7 @@ function Home() {
                 className="w-full h-[80vh] object-cover"
                 onError={(e) => {
                   console.error("Failed to load image:", image.src);
-                  e.target.src = "/fallback.jpg"; // Make sure fallback.jpg exists in public folder
+                  e.target.src = "/fallback.jpg"; // Ensure fallback.jpg exists in the public folder
                 }}
               />
               <p className="absolute inset-0 flex items-center justify-center text-white text-3xl md:text-5xl font-extrabold bg-black bg-opacity-50 p-6 text-center">
@@ -43,6 +53,7 @@ function Home() {
       <div className="flex-grow">
         <Benefits />
       </div>
+      <Investment/>
     </div>
   );
 }
