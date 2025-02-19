@@ -14,7 +14,7 @@ function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center">
           <img
-            src="public/logo.jpg" // Path to your logo image
+            src="/logo.jpg" // Path to your logo image
             alt="United Intellects Logo"
             className="h-10 w-10 rounded-full object-cover" // Rounded full logo
           />
