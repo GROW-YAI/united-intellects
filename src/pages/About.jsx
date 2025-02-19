@@ -15,7 +15,7 @@ const About = () => {
 
       {/* Background */}
       <div className="mt-10 flex flex-col md:flex-row items-center gap-8">
-        <img src="src/assets/bg1.webp" alt="Background" className="w-full md:w-1/2 rounded-lg shadow-lg" />
+        <img src="/bg1.webp" alt="Background" className="w-full md:w-1/2 rounded-lg shadow-lg" />
         <div className="md:w-1/2">
           <h3 className="text-2xl font-bold text-green-700 flex items-center gap-2">
             <GiRiver className="text-green-700" /> Our Story
@@ -28,7 +28,7 @@ const About = () => {
 
       {/* Mission */}
       <div className="mt-10 flex flex-col md:flex-row-reverse items-center gap-8">
-        <img src="src/assets/bg3.webp" alt="Mission" className="w-full md:w-1/2 rounded-lg shadow-lg" />
+        <img src="/bg3.webp" alt="Mission" className="w-full md:w-1/2 rounded-lg shadow-lg" />
         <div className="md:w-1/2">
           <h3 className="text-2xl font-bold text-green-700 flex items-center gap-2">
             <MdOutlineRestore className="text-green-700" /> Our Mission
@@ -45,7 +45,7 @@ const About = () => {
 
       {/* Why It Matters */}
       <div className="mt-10 flex flex-col md:flex-row items-center gap-8">
-        <img src="src/assets/bg4.webp" alt="Why It Matters" className="w-full md:w-1/2 rounded-lg shadow-lg" />
+        <img src="/bg4.webp" alt="Why It Matters" className="w-full md:w-1/2 rounded-lg shadow-lg" />
         <div className="md:w-1/2">
           <h3 className="text-2xl font-bold text-green-700 flex items-center gap-2">
             <FaBolt className="text-green-700" /> Why It Matters
