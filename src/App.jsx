@@ -5,6 +5,7 @@ import About from "./pages/About";
 import Features from "./pages/Features";
 import Testimonials from "./pages/Testimonials";
 import Contact from "./pages/Contact";
+import NotFound from "./pages/NotFound";
 
 const router = createBrowserRouter([
   {
@@ -15,9 +16,10 @@ const router = createBrowserRouter([
       { path: "about", element: <About /> },
       { path: "features", element: <Features /> },
       { path: "testimonials", element: <Testimonials /> },
-      { path: "contact", element: <Contact /> }
-    ]
-  }
+      { path: "contact", element: <Contact /> },
+      { path: "*", element: <NotFound /> },
+    ],
+  },
 ]);
 
 function App() {
