@@ -9,10 +9,16 @@ function Navbar() {
   };
 
   return (
-    <nav className="bg-gray-900 text-white p-4 shadow-md">
+    <nav className="bg-yellow-500 text-white p-4 shadow-md">
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
-        <h1 className="text-xl font-bold">United Intellects</h1>
+        <Link to="/" className="flex items-center">
+          <img
+            src="public/logo.jpg" // Path to your logo image
+            alt="United Intellects Logo"
+            className="h-10 w-10 rounded-full object-cover" // Rounded full logo
+          />
+        </Link>
 
         {/* Hamburger Menu Icon (Mobile) */}
         <button
@@ -57,38 +63,38 @@ function Navbar() {
         <div className="hidden md:flex space-x-4">
           <Link
             to="/"
-            className="relative hover:text-gray-400 transition-colors duration-300"
+            className="relative hover:text-gray-400 transition-colors duration-300 group"
           >
             Home
-            <span className="absolute left-0 bottom-0 h-0.5 bg-gray-400 w-0 hover:w-full transition-all duration-300"></span>
+            <span className="absolute left-0 bottom-0 h-1.5 bg-gray-400 w-0 group-hover:w-full transition-all duration-300"></span>
           </Link>
           <Link
             to="/about"
-            className="relative hover:text-gray-400 transition-colors duration-300"
+            className="relative hover:text-gray-400 transition-colors duration-300 group"
           >
             About
-            <span className="absolute left-0 bottom-0 h-0.5 bg-gray-400 w-0 hover:w-full transition-all duration-300"></span>
+            <span className="absolute left-0 bottom-0 h-1.5 bg-gray-400 w-0 group-hover:w-full transition-all duration-300"></span>
           </Link>
           <Link
             to="/features"
-            className="relative hover:text-gray-400 transition-colors duration-300"
+            className="relative hover:text-gray-400 transition-colors duration-300 group"
           >
             Features
-            <span className="absolute left-0 bottom-0 h-0.5 bg-gray-400 w-0 hover:w-full transition-all duration-300"></span>
+            <span className="absolute left-0 bottom-0 h-1.5 bg-gray-400 w-0 group-hover:w-full transition-all duration-300"></span>
           </Link>
           <Link
             to="/testimonials"
-            className="relative hover:text-gray-400 transition-colors duration-300"
+            className="relative hover:text-gray-400 transition-colors duration-300 group"
           >
             Testimonials
-            <span className="absolute left-0 bottom-0 h-0.5 bg-gray-400 w-0 hover:w-full transition-all duration-300"></span>
+            <span className="absolute left-0 bottom-0 h-1.5 bg-gray-400 w-0 group-hover:w-full transition-all duration-300"></span>
           </Link>
           <Link
             to="/contact"
-            className="relative hover:text-gray-400 transition-colors duration-300"
+            className="relative hover:text-gray-400 transition-colors duration-300 group"
           >
             Contact
-            <span className="absolute left-0 bottom-0 h-0.5 bg-gray-400 w-0 hover:w-full transition-all duration-300"></span>
+            <span className="absolute left-0 bottom-0 h-1.5 bg-gray-400 w-0 group-hover:w-full transition-all duration-300"></span>
           </Link>
         </div>
       </div>
