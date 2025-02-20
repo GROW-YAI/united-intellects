@@ -3,7 +3,7 @@ import Benefits from "../components/Benefits";
 import Investment from "../components/Investments";
 
 const images = [
-  "/carousel1.webp",
+  "/test.webp",
   "/carousel2.webp",
   "/carousel3.webp",
 ];
