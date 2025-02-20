@@ -1,53 +1,60 @@
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { useState, useEffect } from "react";
 import Benefits from "../components/Benefits";
 import Investment from "../components/Investments";
 
 const images = [
-  {
-    src: `${import.meta.env.BASE_URL}carousel1.webp`, 
-    caption: "Restoring Ghana's Rivers for a Sustainable Future",
-  },
-  {
-    src: `${import.meta.env.BASE_URL}carousel2.webp`,
-    caption: "Harnessing Clean Energy for a Greener Tomorrow",
-  },
-  {
-    src: `${import.meta.env.BASE_URL}carousel3.webp`,
-    caption: "Empowering Communities Through Conservation",
-  },
+  "/test.webp",
+  "/carousel2.webp",
+  "/carousel3.webp",
 ];
 
-
 function Home() {
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen">
-      <div className="w-full">
-        <Carousel
-          showThumbs={false}
-          autoPlay
-          infiniteLoop
-          interval={4000}
-          stopOnHover={false}
-          showStatus={false}
-        >
-          {images.map((image, index) => (
-            <div key={index} className="relative w-full">
-              <img
-                src={image.src}
-                alt={image.caption}
-                className="w-full h-[80vh] object-cover"
-                onError={(e) => {
-                  console.error("Failed to load image:", image.src);
-                  e.target.src = "/fallback.jpg"; // Ensure fallback.jpg exists in public
-                }}
-              />
-              <p className="absolute inset-0 flex items-center justify-center text-white text-3xl md:text-5xl font-extrabold bg-black bg-opacity-50 p-6 text-center">
-                {image.caption}
-              </p>
-            </div>
-          ))}
-        </Carousel>
+      {/* Background Image Transition */}
+      <div className="relative w-full h-[80vh] overflow-hidden">
+        {images.map((image, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 w-full h-full min-h-[80vh] transition-opacity duration-1000 ease-in-out ${
+              index === currentImage ? "opacity-100" : "opacity-0"
+            }`}
+            style={{
+              backgroundImage: `url(${image})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          ></div>
+        ))}
+
+        {/* Debugging Fallback */}
+        <img
+          src={images[currentImage]}
+          alt="Fallback"
+          className="absolute inset-0 w-full h-full object-cover hidden"
+          onError={(e) => console.error("Image failed to load:", e.target.src)}
+        />
+
+        {/* Overlay Caption */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 p-6 text-center">
+          <p className="text-white text-3xl md:text-5xl font-extrabold">
+            {[
+              "Restoring Ghana's Rivers for a Sustainable Future",
+              "Harnessing Clean Energy for a Greener Tomorrow",
+              "Empowering Communities Through Conservation",
+            ][currentImage]}
+          </p>
+        </div>
       </div>
 
       {/* Benefits Section */}
