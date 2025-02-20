@@ -1,7 +1,9 @@
 import { motion } from "framer-motion";
 import { FaLeaf, FaHandHoldingUsd, FaGlobeAfrica, FaSeedling, FaHandshake, FaUsers } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Investment = () => {
+  const navigate = useNavigate();
   return (
     <motion.div 
       className="mt-10 p-10 bg-green-50 rounded-lg shadow-lg max-w-6xl mx-auto"
@@ -126,9 +128,10 @@ const Investment = () => {
 
       {/* Call-to-Action */}
       <div className="mt-10 text-center">
-        <motion.button
+      <motion.button
           className="bg-green-700 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-800 transition-all"
           whileHover={{ scale: 1.1 }}
+          onClick={() => navigate("/contact")} // Navigate to the Contact page
         >
           Become an Investor 🚀
         </motion.button>
