@@ -3,7 +3,7 @@ import Benefits from "../components/Benefits";
 import Investment from "../components/Investments";
 
 const images = [
-  "/test.webp",
+  "/carousel1.webp",
   "/carousel2.webp",
   "/carousel3.webp",
 ];
@@ -20,34 +20,41 @@ function Home() {
   }, []);
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
       {/* Background Image Transition */}
-      <div className="relative w-full h-[80vh] overflow-hidden">
+      <div style={{ position: "relative", width: "100%", height: "80vh", overflow: "hidden" }}>
         {images.map((image, index) => (
           <div
             key={index}
-            className={`absolute inset-0 w-full h-full min-h-[80vh] transition-opacity duration-1000 ease-in-out ${
-              index === currentImage ? "opacity-100" : "opacity-0"
-            }`}
             style={{
+              position: "absolute",
+              inset: "0",
+              transition: "opacity 1s ease-in-out",
+              opacity: index === currentImage ? 1 : 0,
               backgroundImage: `url(${image})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
+              width: "100%",
+              height: "100%",
+              zIndex: index === currentImage ? 10 : 0,
             }}
           ></div>
         ))}
 
-        {/* Debugging Fallback */}
-        <img
-          src={images[currentImage]}
-          alt="Fallback"
-          className="absolute inset-0 w-full h-full object-cover hidden"
-          onError={(e) => console.error("Image failed to load:", e.target.src)}
-        />
-
         {/* Overlay Caption */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 p-6 text-center">
-          <p className="text-white text-3xl md:text-5xl font-extrabold">
+        <div
+          style={{
+            position: "absolute",
+            inset: "0",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            padding: "1.5rem",
+            textAlign: "center",
+          }}
+        >
+          <p style={{ color: "white", fontSize: "2rem", fontWeight: "bold" }}>
             {[
               "Restoring Ghana's Rivers for a Sustainable Future",
               "Harnessing Clean Energy for a Greener Tomorrow",
@@ -58,7 +65,7 @@ function Home() {
       </div>
 
       {/* Benefits Section */}
-      <div className="flex-grow">
+      <div style={{ flexGrow: 1 }}>
         <Benefits />
       </div>
       <Investment />
