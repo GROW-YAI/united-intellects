@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Benefits from "../components/Benefits";
 import Investment from "../components/Investments";
+import ChatBox from "../components/ChatBox";
 
 const images = [
   "/test.webp",
@@ -69,6 +70,8 @@ function Home() {
         <Benefits />
       </div>
       <Investment />
+      {/* Floating Chatbox */}
+      <ChatBox />
     </div>
   );
 }
