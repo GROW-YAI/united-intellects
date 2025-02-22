@@ -11,61 +11,69 @@ function Features() {
   // Features data
   const features = [
     {
-      icon: <FaWater className="text-blue-500 text-5xl" />,
+      icon: <FaWater className="text-blue-600 text-6xl" />,
       title: "Advanced Filtration Technology",
-      description: "Uses horizontal membrane filtration to enhance water purity, removing contaminants effectively.",
-      bgGradient: "bg-gradient-to-r from-blue-50 to-indigo-50",
+      description:
+        "Our cutting-edge horizontal membrane filtration system ensures the highest water purity. It effectively removes harmful contaminants such as bacteria, heavy metals, and microplastics, making water safer for drinking, irrigation, and industrial use.",
+      bgGradient: "bg-gradient-to-r from-blue-100 to-indigo-200",
     },
     {
-      icon: <FaBolt className="text-green-500 text-5xl" />,
+      icon: <FaBolt className="text-green-600 text-6xl" />,
       title: "Hydro Power Generation",
-      description: "Harnesses the power of flowing water to generate renewable energy for sustainable agricultural processes.",
-      bgGradient: "bg-gradient-to-r from-green-50 to-teal-50",
+      description:
+        "Utilizing the natural flow of water, our hydro power generation system converts kinetic energy into renewable electricity. This eco-friendly innovation supports sustainable agricultural practices, reducing dependence on non-renewable energy sources and lowering carbon footprints.",
+      bgGradient: "bg-gradient-to-r from-green-100 to-teal-200",
     },
     {
-      icon: <FaLeaf className="text-purple-500 text-5xl" />,
+      icon: <FaLeaf className="text-purple-600 text-6xl" />,
       title: "Enhanced Ecosystem & Biodiversity",
-      description: "Promotes improved water quality and biodiversity, ensuring a balanced and healthy environment.",
-      bgGradient: "bg-gradient-to-r from-purple-50 to-pink-50",
+      description:
+        "By promoting cleaner water and reducing pollutants, our system fosters a thriving ecosystem. Improved water quality leads to healthier aquatic life, increased biodiversity, and a more balanced natural environment that benefits both wildlife and human communities.",
+      bgGradient: "bg-gradient-to-r from-purple-100 to-pink-200",
     },
   ];
 
   return (
     <motion.div
-      className="p-10 bg-white min-h-screen flex flex-col items-center justify-center"
+      className="p-12 bg-white min-h-screen flex flex-col items-center justify-center"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
+      {/* Header Section */}
       <motion.h2
-        className="text-4xl font-bold text-gray-800 mb-8"
+        className="text-5xl font-bold text-gray-900 mb-10 text-center"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        Key Features
+        Key Features & Innovations
       </motion.h2>
 
+      {/* Features List */}
       <motion.ul
-        className="space-y-6 max-w-3xl w-full"
+        className="space-y-8 max-w-4xl w-full"
         initial="hidden"
         animate="visible"
       >
         {features.map((feature, index) => (
           <motion.li
             key={index}
-            className={`p-6 ${feature.bgGradient} rounded-lg shadow-md flex items-center space-x-6`}
+            className={`p-8 ${feature.bgGradient} rounded-lg shadow-lg flex items-center space-x-8 transform transition duration-300 hover:scale-105`}
             variants={listItemVariants}
-            whileHover={{ scale: 1.05 }}
           >
-            <div className="w-16 h-16 flex items-center justify-center bg-white rounded-full shadow-lg">
+            {/* Feature Icon */}
+            <div className="w-20 h-20 flex items-center justify-center bg-white rounded-full shadow-xl">
               {feature.icon}
             </div>
+            {/* Feature Text Content */}
             <div>
-              <h3 className="text-xl font-semibold text-gray-800">
+              <h3 className="text-2xl font-semibold text-gray-900">
                 {feature.title}
               </h3>
-              <p className="text-gray-600 mt-2">{feature.description}</p>
+              <p className="text-gray-700 mt-3 leading-relaxed">
+                {feature.description}
+              </p>
             </div>
           </motion.li>
         ))}
