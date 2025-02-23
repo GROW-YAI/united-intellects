@@ -58,7 +58,7 @@ app.post("/contact", async (req, res) => {
     // Send email notification (Optional)
     const mailOptions = {
       from: "felixatoma2@gmail.com", // Replace with your email
-      to: "obaaelie@gmail.com", // Replace with your client's email
+      to: "yeboahmartin733@gmail.com", // Replace with your client's email
       subject: `New Contact Form Submission: ${subject}`,
       text: `
         Name: ${fullName}
