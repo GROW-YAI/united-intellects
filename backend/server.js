@@ -11,7 +11,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB Connection
-const MONGO_URI = "mongodb+srv://admin:Adjola12%2E%2C@cluster0.8vm0z.mongodb.net/contact-form?retryWrites=true&w=majority"; // Replace with your MongoDB connection string
+const MONGO_URI = "mongodb+srv://admin:Adjola12%2E%2C@cluster0.8vm0z.mongodb.net/contact-form?retryWrites=true&w=majority";
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("Connected to MongoDB"))
@@ -30,22 +30,24 @@ const contactSchema = new mongoose.Schema({
 
 const Contact = mongoose.model("Contact", contactSchema);
 
-// Nodemailer Configuration (Optional)
+// Nodemailer Configuration
 const transporter = nodemailer.createTransport({
-  service: "gmail", // Use your email service (e.g., Gmail, Outlook)
+  service: "gmail",
   auth: {
-    user: "felixatoma2@gmail.com", // Replace with your email
-    pass: "idzf ugsb bbcv enkv", // Replace with your app password
+    user: "felixatoma2@gmail.com", // Your email
+    pass: "idzf ugsb bbcv enkv", // Your app password
   },
 });
 
+const CLIENT_EMAIL = "yeboahmartin733@gmail.com"; // Your client's email
+
 // POST endpoint to handle form submissions
 app.post("/contact", async (req, res) => {
-  console.log("Request Body:", req.body); // Log the request body
+  console.log("Request Body:", req.body);
   const { fullName, email, phone, address, subject, message } = req.body;
 
   if (!fullName || !email || !message) {
-    console.log("Missing required fields"); // Log missing fields
+    console.log("Missing required fields");
     return res.status(400).json({ error: "Full name, email, and message are required" });
   }
 
@@ -53,13 +55,14 @@ app.post("/contact", async (req, res) => {
     // Save form data to MongoDB
     const newContact = new Contact({ fullName, email, phone, address, subject, message });
     await newContact.save();
-    console.log("Data saved to MongoDB"); // Log success
+    console.log("Data saved to MongoDB");
 
-    // Send email notification (Optional)
-    const mailOptions = {
-      from: "felixatoma2@gmail.com", // Replace with your email
-      to: "yeboahmartin733@gmail.com", // Replace with your client's email
-      subject: `New Contact Form Submission: ${subject}`,
+    // Email to your client (the website owner)
+    const ownerMailOptions = {
+      from: email, // Use sender's email
+      to: CLIENT_EMAIL, // Only the owner receives it
+      bcc: "", // Ensure no hidden copies are sent
+      subject: `New Contact Form Submission from ${fullName}`,
       text: `
         Name: ${fullName}
         Email: ${email}
@@ -70,19 +73,48 @@ app.post("/contact", async (req, res) => {
       `,
     };
 
-    await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully"); // Log success
+    await transporter.sendMail(ownerMailOptions);
+    console.log("Email sent to website owner");
+
+    // Confirmation email to the sender
+    const clientMailOptions = {
+      from: "no-reply@yourdomain.com", // Use a no-reply email
+      to: email, // Send confirmation to the sender
+      subject: `Thank you for contacting us, ${fullName}`,
+      text: `
+        Dear ${fullName},
+
+        Thank you for reaching out! We have received your message and will get back to you shortly.
+
+        Your Message:
+        ------------------------
+        Name: ${fullName}
+        Email: ${email}
+        Phone: ${phone}
+        Address: ${address}
+        Subject: ${subject}
+        Message: ${message}
+        ------------------------
+
+        Best regards,
+        United-Intellects
+      `,
+    };
+
+    await transporter.sendMail(clientMailOptions);
+    console.log("Confirmation email sent to client");
 
     // Respond to the client
     res.status(200).json({ message: "Message sent successfully!" });
   } catch (error) {
-    console.error("Error:", error); // Log the error
+    console.error("Error:", error);
     res.status(500).json({ error: "Failed to send the message. Please try again." });
   }
 });
 
 // Start the server
-const PORT = process.env.PORT || 5000; // Use environment variable or default to 5000
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+

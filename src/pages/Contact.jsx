@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -12,6 +15,8 @@ const Contact = () => {
     message: "",
   });
 
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -19,9 +24,10 @@ const Contact = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError(null);
 
     try {
-      const response = await fetch("http://localhost:5000/contact", { // Updated endpoint
+      const response = await fetch(`${backendUrl}/contact`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -31,7 +37,7 @@ const Contact = () => {
 
       const result = await response.json();
       if (response.ok) {
-        alert("Message sent successfully!");
+        toast.success("Message sent successfully!");
         setFormData({
           fullName: "",
           email: "",
@@ -41,13 +47,15 @@ const Contact = () => {
           message: "",
         });
       } else {
-        alert("Failed to send the message: " + result.error);
+        setError(result.error || "Something went wrong.");
+        toast.error(result.error || "Failed to send the message.");
       }
     } catch (error) {
       console.error("Error:", error);
-      alert("Failed to send the message. Please try again.");
+      setError("Failed to send the message. Please try again.");
+      toast.error("Failed to send the message. Please check your connection.");
     }
-    
+
     setLoading(false);
   };
 
@@ -66,6 +74,8 @@ const Contact = () => {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl font-bold text-green-800 mb-6">Get in Touch</h2>
+          {error && <p className="text-red-600 mb-4">{error}</p>}
+
           <form onSubmit={handleSubmit} className="space-y-4">
             <input name="fullName" type="text" placeholder="Full Name" value={formData.fullName} onChange={handleChange} className="block w-full p-3 border rounded-md focus:border-green-500" required />
             <input name="email" type="email" placeholder="Email" value={formData.email} onChange={handleChange} className="block w-full p-3 border rounded-md focus:border-green-500" required />
@@ -97,6 +107,8 @@ const Contact = () => {
           <img src="/contact.webp" alt="Contact" className="w-full rounded-lg shadow-md" />
         </motion.div>
       </div>
+
+      <ToastContainer />
     </motion.div>
   );
 };
