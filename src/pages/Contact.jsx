@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import emailjs from "emailjs-com";
 
 const Contact = () => {
   const [loading, setLoading] = useState(false);
@@ -21,42 +20,35 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
 
-    const templateParams = {
-      to_name: "United-Intellects Admin",
-      from_name: formData.fullName,
-      email: formData.email,
-      phone: formData.phone,
-      subject: formData.subject,
-      message: formData.message,
-    };
-
-    emailjs
-      .send(
-        "your_service_id", // Replace with your EmailJS service ID
-        "your_template_id", // Replace with your EmailJS template ID
-        templateParams,
-        "your_public_key" // Replace with your EmailJS public key
-      )
-      .then(
-        (response) => {
-          console.log("SUCCESS!", response.status, response.text);
-          setLoading(false);
-          alert("Message sent successfully!");
-          setFormData({
-            fullName: "",
-            email: "",
-            phone: "",
-            address: "",
-            subject: "",
-            message: "",
-          });
+    try {
+      const response = await fetch("http://localhost:5000/contact", { // Updated endpoint
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        (error) => {
-          console.log("FAILED...", error);
-          setLoading(false);
-          alert("Failed to send the message. Please try again.");
-        }
-      );
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert("Message sent successfully!");
+        setFormData({
+          fullName: "",
+          email: "",
+          phone: "",
+          address: "",
+          subject: "",
+          message: "",
+        });
+      } else {
+        alert("Failed to send the message: " + result.error);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to send the message. Please try again.");
+    }
+    
+    setLoading(false);
   };
 
   return (
