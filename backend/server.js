@@ -4,16 +4,23 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
 
+env = require("dotenv").config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(
+  cors({
+    origin: ["https://united-intellectuals.netlify.app/"], // Replace with your actual Netlify URL
+    methods: ["POST"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 app.use(bodyParser.json());
 
 // MongoDB Connection
-const MONGO_URI = "mongodb+srv://admin:Adjola12%2E%2C@cluster0.8vm0z.mongodb.net/contact-form?retryWrites=true&w=majority";
+const MONGO_URI = process.env.MONGO_URI;
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection error:", err));
 
@@ -34,15 +41,16 @@ const Contact = mongoose.model("Contact", contactSchema);
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: "felixatoma2@gmail.com", // Your email
-    pass: "idzf ugsb bbcv enkv", // Your app password
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
 });
 
-const CLIENT_EMAIL = "yeboahmartin733@gmail.com"; // Your client's email
+const CLIENT_EMAIL = process.env.CLIENT_EMAIL;
 
 // POST endpoint to handle form submissions
 app.post("/contact", async (req, res) => {
+  console.log("Incoming request from:", req.headers.origin);
   console.log("Request Body:", req.body);
   const { fullName, email, phone, address, subject, message } = req.body;
 
@@ -59,9 +67,8 @@ app.post("/contact", async (req, res) => {
 
     // Email to your client (the website owner)
     const ownerMailOptions = {
-      from: email, // Use sender's email
-      to: CLIENT_EMAIL, // Only the owner receives it
-      bcc: "", // Ensure no hidden copies are sent
+      from: email,
+      to: CLIENT_EMAIL,
       subject: `New Contact Form Submission from ${fullName}`,
       text: `
         Name: ${fullName}
@@ -78,8 +85,8 @@ app.post("/contact", async (req, res) => {
 
     // Confirmation email to the sender
     const clientMailOptions = {
-      from: "no-reply@yourdomain.com", // Use a no-reply email
-      to: email, // Send confirmation to the sender
+      from: "no-reply@yourdomain.com",
+      to: email,
       subject: `Thank you for contacting us, ${fullName}`,
       text: `
         Dear ${fullName},
@@ -104,7 +111,6 @@ app.post("/contact", async (req, res) => {
     await transporter.sendMail(clientMailOptions);
     console.log("Confirmation email sent to client");
 
-    // Respond to the client
     res.status(200).json({ message: "Message sent successfully!" });
   } catch (error) {
     console.error("Error:", error);
