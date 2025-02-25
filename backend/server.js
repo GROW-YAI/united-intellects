@@ -1,4 +1,4 @@
-require("dotenv").config(); // Ensure .env is loaded
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
@@ -8,14 +8,14 @@ const connectDB = require("./db");
 
 const app = express();
 
-// CORS Configuration: Allow Netlify & Local Dev
+// Allow CORS for Netlify and Localhost
 app.use(
   cors({
     origin: [
-      "https://united-intellectuals.netlify.app", 
+      "https://united-intellectuals.netlify.app",
       "http://localhost:5173"
-    ], 
-    methods: ["POST"],
+    ],
+    methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
   })
 );
@@ -96,5 +96,5 @@ app.post("/contact", async (req, res) => {
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+  console.log(`Server running on port ${PORT}`);
 });
