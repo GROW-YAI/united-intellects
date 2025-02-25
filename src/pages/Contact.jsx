@@ -15,16 +15,16 @@ const Contact = () => {
     message: "",
   });
 
-  // Get Backend URL from .env
+  // ✅ Backend URL
   const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
 
-  // Handle form input changes
+  // ✅ Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Handle form submission
+  // ✅ Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);

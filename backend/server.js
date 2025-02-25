@@ -8,29 +8,30 @@ const connectDB = require("./db");
 
 const app = express();
 
-// Allow CORS for Netlify and Localhost
+// ✅ Allow CORS for Netlify & Localhost (Ensures the frontend can connect)
 app.use(
   cors({
     origin: [
       "https://united-intellectuals.netlify.app",
-      "http://localhost:5173"
+      "http://localhost:5173",
     ],
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
+    credentials: true, // ✅ Allows credentials (if needed)
   })
 );
 
 app.use(bodyParser.json());
 
-// MongoDB Connection
+// ✅ Connect to MongoDB
 connectDB();
 
-// Health Check Route
+// ✅ Health Check Route
 app.get("/ping", (req, res) => {
   res.status(200).json({ message: "Backend is running!" });
 });
 
-// Contact Form Schema
+// ✅ Contact Form Schema
 const contactSchema = new mongoose.Schema({
   fullName: String,
   email: String,
@@ -43,7 +44,7 @@ const contactSchema = new mongoose.Schema({
 
 const Contact = mongoose.model("Contact", contactSchema);
 
-// Nodemailer Configuration
+// ✅ Nodemailer Configuration
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -54,7 +55,7 @@ const transporter = nodemailer.createTransport({
 
 const CLIENT_EMAIL = process.env.CLIENT_EMAIL;
 
-// POST route for Contact Form
+// ✅ Contact Form Submission Route
 app.post("/contact", async (req, res) => {
   console.log("Incoming request from:", req.headers.origin);
   console.log("Request Body:", req.body);
@@ -66,12 +67,12 @@ app.post("/contact", async (req, res) => {
   }
 
   try {
-    // Save data to MongoDB
+    // ✅ Save data to MongoDB
     const newContact = new Contact({ fullName, email, phone, address, subject, message });
     await newContact.save();
     console.log("Data saved to MongoDB");
 
-    // Send confirmation emails
+    // ✅ Send confirmation emails
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: CLIENT_EMAIL,
@@ -93,7 +94,7 @@ app.post("/contact", async (req, res) => {
   }
 });
 
-// Start Server
+// ✅ Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
