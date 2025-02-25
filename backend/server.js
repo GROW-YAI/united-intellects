@@ -1,30 +1,36 @@
+require("dotenv").config(); // Ensure .env is loaded
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const mongoose = require("mongoose");
 const nodemailer = require("nodemailer");
+const mongoose = require("mongoose");
+const connectDB = require("./db");
 
-env = require("dotenv").config();
 const app = express();
 
-// Middleware
+// CORS Configuration: Allow Netlify & Local Dev
 app.use(
   cors({
-    origin: ["https://united-intellectuals.netlify.app/"], // Replace with your actual Netlify URL
+    origin: [
+      "https://united-intellectuals.netlify.app", 
+      "http://localhost:5173"
+    ], 
     methods: ["POST"],
     allowedHeaders: ["Content-Type"],
   })
 );
+
 app.use(bodyParser.json());
 
 // MongoDB Connection
-const MONGO_URI = process.env.MONGO_URI;
-mongoose
-  .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.error("MongoDB connection error:", err));
+connectDB();
 
-// MongoDB Schema
+// Health Check Route
+app.get("/ping", (req, res) => {
+  res.status(200).json({ message: "Backend is running!" });
+});
+
+// Contact Form Schema
 const contactSchema = new mongoose.Schema({
   fullName: String,
   email: String,
@@ -48,68 +54,37 @@ const transporter = nodemailer.createTransport({
 
 const CLIENT_EMAIL = process.env.CLIENT_EMAIL;
 
-// POST endpoint to handle form submissions
+// POST route for Contact Form
 app.post("/contact", async (req, res) => {
   console.log("Incoming request from:", req.headers.origin);
   console.log("Request Body:", req.body);
+
   const { fullName, email, phone, address, subject, message } = req.body;
 
   if (!fullName || !email || !message) {
-    console.log("Missing required fields");
     return res.status(400).json({ error: "Full name, email, and message are required" });
   }
 
   try {
-    // Save form data to MongoDB
+    // Save data to MongoDB
     const newContact = new Contact({ fullName, email, phone, address, subject, message });
     await newContact.save();
     console.log("Data saved to MongoDB");
 
-    // Email to your client (the website owner)
-    const ownerMailOptions = {
-      from: email,
+    // Send confirmation emails
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
       to: CLIENT_EMAIL,
       subject: `New Contact Form Submission from ${fullName}`,
-      text: `
-        Name: ${fullName}
-        Email: ${email}
-        Phone: ${phone}
-        Address: ${address}
-        Subject: ${subject}
-        Message: ${message}
-      `,
-    };
+      text: `Name: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nAddress: ${address}\nSubject: ${subject}\nMessage: ${message}`,
+    });
 
-    await transporter.sendMail(ownerMailOptions);
-    console.log("Email sent to website owner");
-
-    // Confirmation email to the sender
-    const clientMailOptions = {
-      from: "no-reply@yourdomain.com",
+    await transporter.sendMail({
+      from: process.env.EMAIL_USER,
       to: email,
       subject: `Thank you for contacting us, ${fullName}`,
-      text: `
-        Dear ${fullName},
-
-        Thank you for reaching out! We have received your message and will get back to you shortly.
-
-        Your Message:
-        ------------------------
-        Name: ${fullName}
-        Email: ${email}
-        Phone: ${phone}
-        Address: ${address}
-        Subject: ${subject}
-        Message: ${message}
-        ------------------------
-
-        Best regards,
-        United-Intellects
-      `,
-    };
-
-    await transporter.sendMail(clientMailOptions);
-    console.log("Confirmation email sent to client");
+      text: `Dear ${fullName},\n\nThank you for reaching out! We have received your message and will get back to you shortly.\n\nBest regards,\nUnited-Intellects`,
+    });
 
     res.status(200).json({ message: "Message sent successfully!" });
   } catch (error) {
@@ -118,9 +93,8 @@ app.post("/contact", async (req, res) => {
   }
 });
 
-// Start the server
+// Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
-
