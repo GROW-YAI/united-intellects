@@ -114,6 +114,7 @@ const io = socketIo(server, {
     methods: ["GET", "POST"],
     credentials: true,
   },
+  transports: ["websocket", "polling"], // ✅ Ensures compatibility with mobile browsers & restricted networks
 });
 
 io.on("connection", (socket) => {
