@@ -1,15 +1,11 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
-const http = require("http");
-const socketIo = require("socket.io");
 const connectDB = require("./db");
 
 const app = express();
-const server = http.createServer(app);
 
 // ✅ Allow CORS for Vercel, Netlify & Localhost
 const allowedOrigins = [
@@ -34,7 +30,7 @@ app.use(
   })
 );
 
-app.use(bodyParser.json());
+app.use(express.json());
 
 // ✅ Connect to MongoDB
 connectDB();
@@ -80,12 +76,12 @@ app.post("/contact", async (req, res) => {
   }
 
   try {
-    // ✅ Save data to MongoDB
+    // Save data to MongoDB
     const newContact = new Contact({ fullName, email, phone, address, subject, message });
     await newContact.save();
     console.log("Data saved to MongoDB");
 
-    // ✅ Send confirmation emails
+    // Send confirmation emails
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: CLIENT_EMAIL,
@@ -107,26 +103,8 @@ app.post("/contact", async (req, res) => {
   }
 });
 
-// ✅ SOCKET.IO SETUP (Ensuring CORS is correctly set and does not interfere with form requests)
-const io = socketIo(server, {
-  cors: {
-    origin: allowedOrigins,
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-  transports: ["websocket", "polling"], // ✅ Ensures compatibility with mobile browsers & restricted networks
-});
-
-io.on("connection", (socket) => {
-  console.log("New client connected");
-
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
-  });
-});
-
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

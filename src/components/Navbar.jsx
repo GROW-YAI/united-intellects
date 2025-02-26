@@ -14,7 +14,7 @@ function Navbar() {
   const handleLinkClick = (path) => {
     setLoading(true); // Show spinner
     setTimeout(() => {
-      navigate(path); // Navigate to the new page
+      navigate(path === "/home" ? "/" : path); // Fix home navigation
       setLoading(false); // Hide spinner after navigation
     }, 1000); // Simulate loading delay
   };
@@ -25,7 +25,7 @@ function Navbar() {
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
           <div className="relative">
-            <img src={logo} alt="Loading Logo" className="h-20 w-auto animate-pulse" />
+            <img src={logo} alt="Loading Logo" className="h-20 w-20 animate-pulse rounded-full" />
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-20 h-20 border-4 border-t-transparent border-white rounded-full animate-spin"></div>
             </div>
@@ -37,7 +37,7 @@ function Navbar() {
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <img src={logo} alt="United Intellects Logo" className="h-12 w-auto" />
+            <img src={logo} alt="United Intellects Logo" className="h-12 w-12 rounded-full" />
           </Link>
 
           {/* Hamburger Menu Icon (Mobile) */}

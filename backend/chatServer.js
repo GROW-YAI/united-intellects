@@ -27,16 +27,17 @@ app.use(
 // Create HTTP server
 const server = http.createServer(app);
 
-// Initialize WebSocket Server
+// Initialize WebSocket Server with improved CORS handling
 const io = new Server(server, {
   cors: {
     origin: FRONTEND_URLS,
     methods: ["GET", "POST"],
+    credentials: true,
   },
 });
 
 // Health check route
-app.get("/", (req, res) => res.send("Chat server is running!"));
+app.get("/", (req, res) => res.send("🔥 Chat server is running!"));
 
 // Connect to MongoDB
 connectDB();
@@ -64,10 +65,10 @@ app.get("/messages", async (req, res) => {
 // ✅ Send a message via API
 app.post("/sendMessage", async (req, res) => {
   try {
-    const { sender, content } = req.body;
-    if (!content) return res.status(400).json({ error: "Message content is required" });
+    const { sender, message } = req.body;
+    if (!message) return res.status(400).json({ error: "Message content is required" });
 
-    const newMessage = new ChatMessage({ sender: sender || "Anonymous", message: content });
+    const newMessage = new ChatMessage({ sender: sender || "Anonymous", message });
     await newMessage.save();
 
     io.emit("receiveMessage", newMessage);
@@ -88,9 +89,9 @@ io.on("connection", (socket) => {
   // Handle incoming messages
   socket.on("sendMessage", async (data) => {
     try {
-      if (!data.content) return;
+      if (!data.message) return;
 
-      const newMessage = new ChatMessage({ sender: data.sender || "Anonymous", message: data.content });
+      const newMessage = new ChatMessage({ sender: data.sender || "Anonymous", message: data.message });
       await newMessage.save();
 
       io.emit("receiveMessage", newMessage);
