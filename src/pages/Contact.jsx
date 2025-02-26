@@ -15,20 +15,26 @@ const Contact = () => {
     message: "",
   });
 
+  // Get Backend URL from .env
+  // ✅ Backend URL
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+
+  // Handle form input changes
   // ✅ Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Handle form submission using Formspree
+  // Handle form submission
+  // ✅ Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch("https://formspree.io/f/xpwqgeyb", {
+      const response = await fetch(`${backendUrl}/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -52,7 +58,7 @@ const Contact = () => {
   return (
     <motion.div className="min-h-screen flex items-center justify-center bg-gray-50 p-10"
       initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
-      
+
       <div className="bg-white shadow-lg rounded-lg p-10 max-w-6xl w-full flex flex-col md:flex-row">
         {/* Contact Form */}
         <motion.div className="md:w-1/2 pr-8" initial={{ x: -50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ duration: 0.8 }}>
