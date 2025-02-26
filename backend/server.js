@@ -11,16 +11,26 @@ const connectDB = require("./db");
 const app = express();
 const server = http.createServer(app);
 
-// ✅ Allow CORS for Netlify & Localhost (Ensures the frontend can connect)
+// ✅ Allow CORS for Vercel, Netlify & Localhost
+const allowedOrigins = [
+  "https://united-intellects.vercel.app",
+  "https://united-intellectuals.netlify.app",
+  "http://localhost:5173",
+];
+
 app.use(
   cors({
-    origin: [
-      "https://united-intellectuals.netlify.app",
-      "http://localhost:5173",
-    ],
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        console.log("Blocked by CORS: ", origin);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
-    credentials: true, // ✅ Allows credentials (if needed)
+    credentials: true,
   })
 );
 
@@ -97,10 +107,10 @@ app.post("/contact", async (req, res) => {
   }
 });
 
-// ✅ SOCKET.IO SETUP (Ensuring CORS is correctly set)
+// ✅ SOCKET.IO SETUP (Ensuring CORS is correctly set and does not interfere with form requests)
 const io = socketIo(server, {
   cors: {
-    origin: ["https://united-intellectuals.netlify.app", "http://localhost:5173"],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
