@@ -15,23 +15,20 @@ const Contact = () => {
     message: "",
   });
 
-  // ✅ Backend URL
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
-
   // ✅ Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // ✅ Handle form submission
+  // ✅ Handle form submission using Formspree
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
     try {
-      const response = await fetch(`${backendUrl}/contact`, {
+      const response = await fetch("https://formspree.io/f/xpwqgeyb", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

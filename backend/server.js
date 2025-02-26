@@ -4,9 +4,12 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const nodemailer = require("nodemailer");
 const mongoose = require("mongoose");
+const http = require("http");
+const socketIo = require("socket.io");
 const connectDB = require("./db");
 
 const app = express();
+const server = http.createServer(app);
 
 // ✅ Allow CORS for Netlify & Localhost (Ensures the frontend can connect)
 app.use(
@@ -94,8 +97,25 @@ app.post("/contact", async (req, res) => {
   }
 });
 
+// ✅ SOCKET.IO SETUP (Ensuring CORS is correctly set)
+const io = socketIo(server, {
+  cors: {
+    origin: ["https://united-intellectuals.netlify.app", "http://localhost:5173"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+
+io.on("connection", (socket) => {
+  console.log("New client connected");
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected");
+  });
+});
+
 // ✅ Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
