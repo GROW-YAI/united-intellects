@@ -17,7 +17,7 @@ const Contact = () => {
   });
 
   // Get Backend URL from .env
-  const backendUrl = import.meta.env.VITE_BACKEND_URL || "http://localhost:5000";
+  const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://united-intellects-backend-5pgx.vercel.app/";
 
   // Handle form input changes
   const handleChange = (e) => {
