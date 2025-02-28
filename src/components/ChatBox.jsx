@@ -19,26 +19,31 @@ function ChatBox() {
   // Handle contact form submission
   const handleContactFormSubmit = async (e) => {
     e.preventDefault();
-
+  
     const { fullName, email, message } = formData;
-
+  
     if (!fullName || !email || !message) {
       toast.error("Full name, email, and message are required.");
       return;
     }
-
+  
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/contact`, {
+      const response = await fetch(`https://united-intellects-backend-5pgx.vercel.app/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
-
+  
+      // Ensure response is OK before parsing
       if (!response.ok) {
-        throw new Error("Failed to send the message. Please try again.");
+        throw new Error(`Server Error: ${response.status}`);
       }
-
-      toast.success("Message sent successfully!");
+  
+      // Handle empty or invalid JSON response
+      const responseData = await response.text();
+      const jsonResponse = responseData ? JSON.parse(responseData) : {};
+  
+      toast.success(jsonResponse.message || "Message sent successfully!");
       setFormData({
         fullName: "",
         email: "",
@@ -53,6 +58,7 @@ function ChatBox() {
       toast.error(error.message || "Failed to send the message. Please try again.");
     }
   };
+  
 
   return (
     <div className="fixed bottom-6 right-6 flex flex-col items-end">
@@ -96,56 +102,19 @@ function ChatBox() {
               </>
             ) : (
               <form onSubmit={handleContactFormSubmit} className="space-y-2">
-                <input
-                  type="text"
-                  name="fullName"
-                  placeholder="Full Name"
-                  value={formData.fullName}
-                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                  className="w-full p-2 border rounded"
-                  required
-                />
-                <input
-                  type="email"
-                  name="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full p-2 border rounded"
-                  required
-                />
-                <input
-                  type="text"
-                  name="phone"
-                  placeholder="Phone"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full p-2 border rounded"
-                />
-                <input
-                  type="text"
-                  name="address"
-                  placeholder="Address"
-                  value={formData.address}
-                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
-                  className="w-full p-2 border rounded"
-                />
-                <input
-                  type="text"
-                  name="subject"
-                  placeholder="Subject"
-                  value={formData.subject}
-                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                  className="w-full p-2 border rounded"
-                />
-                <textarea
-                  name="message"
-                  placeholder="Message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  className="w-full p-2 border rounded resize-none"
-                  required
-                ></textarea>
+                {["fullName", "email", "phone", "address", "subject", "message"].map((field) => (
+                  <input
+                    key={field}
+                    type={field === "email" ? "email" : "text"}
+                    name={field}
+                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                    value={formData[field]}
+                    onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
+                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-green-400"
+                    required={field === "fullName" || field === "email" || field === "message"}
+                  />
+                ))}
+
                 <motion.button
                   type="submit"
                   className="bg-green-500 text-white p-2 rounded w-full mt-2 flex items-center justify-center"
