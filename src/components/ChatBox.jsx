@@ -1,33 +1,57 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaComments, FaTimes, FaPaperPlane } from "react-icons/fa";
-import { io } from "socket.io-client";
-
-// ✅ Use environment variable for the backend URL
-const socket = io(import.meta.env.VITE_BACKEND_URL, {
-  withCredentials: true,
-});
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function ChatBox() {
   const [isOpen, setIsOpen] = useState(false);
-  const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]);
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    address: "",
+    subject: "",
+    message: "",
+  });
 
-  useEffect(() => {
-    socket.on("previousMessages", (messages) => setChat(messages));
-    socket.on("receiveMessage", (data) => setChat((prevChat) => [...prevChat, data]));
+  // Handle contact form submission
+  const handleContactFormSubmit = async (e) => {
+    e.preventDefault();
 
-    return () => {
-      socket.off("previousMessages");
-      socket.off("receiveMessage");
-    };
-  }, []);
+    const { fullName, email, message } = formData;
 
-  const handleSendMessage = () => {
-    if (!message.trim()) return;
+    if (!fullName || !email || !message) {
+      toast.error("Full name, email, and message are required.");
+      return;
+    }
 
-    socket.emit("sendMessage", { sender: "User", message });
-    setMessage("");
+    try {
+      const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to send the message. Please try again.");
+      }
+
+      toast.success("Message sent successfully!");
+      setFormData({
+        fullName: "",
+        email: "",
+        phone: "",
+        address: "",
+        subject: "",
+        message: "",
+      });
+      setShowContactForm(false);
+    } catch (error) {
+      console.error("Error:", error);
+      toast.error(error.message || "Failed to send the message. Please try again.");
+    }
   };
 
   return (
@@ -49,35 +73,98 @@ function ChatBox() {
           >
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-lg font-semibold">Chat Support</h3>
-              <FaTimes className="cursor-pointer text-gray-600" onClick={() => setIsOpen(false)} />
+              <FaTimes
+                className="cursor-pointer text-gray-600"
+                onClick={() => {
+                  setIsOpen(false);
+                  setShowContactForm(false);
+                }}
+              />
             </div>
-            <div className="max-h-48 overflow-y-auto mt-2 border p-2 rounded bg-gray-100 shadow-inner">
-              {chat.map((msg, index) => (
-                <motion.div
-                  key={index}
-                  className={`p-2 my-1 rounded-xl max-w-[75%] ${
-                    msg.sender === "User" ? "bg-green-500 text-white ml-auto" : "bg-gray-300"
-                  }`}
+
+            {!showContactForm ? (
+              <>
+                <div className="max-h-48 overflow-y-auto mt-2 border p-2 rounded bg-gray-100 shadow-inner">
+                  <p className="text-gray-600">Contact support for assistance.</p>
+                </div>
+                <motion.button
+                  onClick={() => setShowContactForm(true)}
+                  className="bg-blue-500 text-white p-2 rounded w-full mt-2 flex items-center justify-center"
                 >
-                  {msg.message}
-                </motion.div>
-              ))}
-            </div>
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Type a message..."
-              className="w-full p-2 border rounded mt-2 resize-none"
-            ></textarea>
-            <motion.button
-              onClick={handleSendMessage}
-              className="bg-green-500 text-white p-2 rounded w-full mt-3 flex items-center justify-center"
-            >
-              <FaPaperPlane className="mr-2" /> Send
-            </motion.button>
+                  Contact Support
+                </motion.button>
+              </>
+            ) : (
+              <form onSubmit={handleContactFormSubmit} className="space-y-2">
+                <input
+                  type="text"
+                  name="fullName"
+                  placeholder="Full Name"
+                  value={formData.fullName}
+                  onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                  className="w-full p-2 border rounded"
+                  required
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  className="w-full p-2 border rounded"
+                  required
+                />
+                <input
+                  type="text"
+                  name="phone"
+                  placeholder="Phone"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  className="w-full p-2 border rounded"
+                />
+                <input
+                  type="text"
+                  name="address"
+                  placeholder="Address"
+                  value={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  className="w-full p-2 border rounded"
+                />
+                <input
+                  type="text"
+                  name="subject"
+                  placeholder="Subject"
+                  value={formData.subject}
+                  onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                  className="w-full p-2 border rounded"
+                />
+                <textarea
+                  name="message"
+                  placeholder="Message"
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  className="w-full p-2 border rounded resize-none"
+                  required
+                ></textarea>
+                <motion.button
+                  type="submit"
+                  className="bg-green-500 text-white p-2 rounded w-full mt-2 flex items-center justify-center"
+                >
+                  <FaPaperPlane className="mr-2" /> Submit
+                </motion.button>
+                <motion.button
+                  type="button"
+                  onClick={() => setShowContactForm(false)}
+                  className="bg-gray-500 text-white p-2 rounded w-full mt-2 flex items-center justify-center"
+                >
+                  Back to Chat
+                </motion.button>
+              </form>
+            )}
           </motion.div>
         )}
       </AnimatePresence>
+      <ToastContainer />
     </div>
   );
 }
