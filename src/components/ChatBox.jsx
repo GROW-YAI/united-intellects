@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FaComments, FaTimes, FaPaperPlane } from "react-icons/fa";
+import { FaComments, FaTimes, FaPaperPlane, FaSpinner } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function ChatBox() {
   const [isOpen, setIsOpen] = useState(false);
   const [showContactForm, setShowContactForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -26,6 +27,8 @@ function ChatBox() {
       toast.error("Full name, email, and message are required.");
       return;
     }
+  
+    setIsLoading(true); // Set loading to true when the form is being submitted
   
     try {
       const response = await fetch(`https://united-intellects-backend-5pgx.vercel.app/contact`, {
@@ -56,6 +59,8 @@ function ChatBox() {
     } catch (error) {
       console.error("Error:", error);
       toast.error(error.message || "Failed to send the message. Please try again.");
+    } finally {
+      setIsLoading(false); // Set loading to false when the submission is complete
     }
   };
   
@@ -118,8 +123,14 @@ function ChatBox() {
                 <motion.button
                   type="submit"
                   className="bg-green-500 text-white p-2 rounded w-full mt-2 flex items-center justify-center"
+                  disabled={isLoading} // Disable the button when loading
                 >
-                  <FaPaperPlane className="mr-2" /> Submit
+                  {isLoading ? (
+                    <FaSpinner className="animate-spin mr-2" />
+                  ) : (
+                    <FaPaperPlane className="mr-2" />
+                  )}
+                  {isLoading ? "Submitting..." : "Submit"}
                 </motion.button>
                 <motion.button
                   type="button"
