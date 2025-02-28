@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./layout/RootLayout";
 import Home from "./pages/Home";
@@ -6,6 +7,7 @@ import Features from "./pages/Features";
 import Testimonials from "./pages/Testimonials";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
+import Loader from "./components/Loader"; // Import Loader Component
 
 const router = createBrowserRouter([
   {
@@ -23,7 +25,14 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000); // Show loader for 2 seconds
+    return () => clearTimeout(timer); // Cleanup timeout to prevent memory leaks
+  }, []);
+
+  return loading ? <Loader /> : <RouterProvider router={router} />;
 }
 
 export default App;
