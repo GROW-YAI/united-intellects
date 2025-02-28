@@ -69,7 +69,7 @@ function ChatBox() {
     <div className="fixed bottom-6 right-6 flex flex-col items-end">
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-green-500 p-4 rounded-full shadow-xl flex items-center justify-center"
+        className="bg-green-700 p-4 rounded-full shadow-xl flex items-center justify-center"
       >
         <FaComments className="text-2xl text-white" />
       </motion.button>
@@ -95,7 +95,7 @@ function ChatBox() {
 
             {!showContactForm ? (
               <>
-                <div className="max-h-48 overflow-y-auto mt-2 border p-2 rounded bg-gray-100 shadow-inner">
+                <div className="max-h-48 overflow-y-auto mt-2 border p-2 rounded bg-white shadow-inner">
                   <p className="text-gray-600">Contact support for assistance.</p>
                 </div>
                 <motion.button
@@ -122,7 +122,7 @@ function ChatBox() {
 
                 <motion.button
                   type="submit"
-                  className="bg-green-500 text-white p-2 rounded w-full mt-2 flex items-center justify-center"
+                  className="bg-green-700 text-white p-2 rounded w-full mt-2 flex items-center justify-center"
                   disabled={isLoading} // Disable the button when loading
                 >
                   {isLoading ? (
