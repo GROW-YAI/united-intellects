@@ -138,7 +138,7 @@ const Investment = () => {
       </div>
 
       {/* Testimonial Section */}
-      <section className="mt-16 p-8 bg-gray-100 rounded-lg shadow-md text-center">
+      <section className="mt-16 p-8  rounded-lg shadow-md text-center bg-white ">
         <h2 className="text-3xl font-bold text-green-800 mb-6">What Our Investors Say</h2>
         <motion.div
           className="text-lg text-gray-700 italic"
@@ -147,7 +147,7 @@ const Investment = () => {
           transition={{ duration: 1 }}
         >
           “Investing in sustainable projects with this initiative has not only boosted my portfolio but also made me feel part of something bigger. I see real change happening.”  
-          <br /> <strong>- Kwame A., Ghana</strong>
+          <br /> <strong>- Kwame A., Berekum</strong>
         </motion.div>
       </section>
     </motion.div>

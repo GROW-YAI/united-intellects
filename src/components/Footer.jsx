@@ -1,4 +1,4 @@
-import { FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaInstagram, FaTiktok } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 function Footer() {
@@ -43,21 +43,36 @@ function Footer() {
           <h2 className="text-lg font-bold mb-3">Follow Us</h2>
           <div className="flex space-x-4">
             <a
-              href="https://www.facebook.com/profile.php?id=100091933808235"
+              href="https://www.facebook.com/profile.php?id=61573820306227"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-amber-400 transition duration-300"
             >
               <FaFacebook size={24} />
             </a>
-            <a href="#" className="hover:text-amber-400 transition duration-300">
+            <a
+              href="https://x.com/unitedintellec"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-amber-400 transition duration-300"
+            >
               <FaTwitter size={24} />
             </a>
-            <a href="#" className="hover:text-amber-400 transition duration-300">
-              <FaLinkedin size={24} />
-            </a>
-            <a href="#" className="hover:text-amber-400 transition duration-300">
+            <a
+              href="https://www.instagram.com/unitedintellect/?next=%2F&hl=en-"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-amber-400 transition duration-300"
+            >
               <FaInstagram size={24} />
+            </a>
+            <a
+              href="https://www.tiktok.com/@united_intellect?lang=en-"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-amber-400 transition duration-300"
+            >
+              <FaTiktok size={24} />
             </a>
           </div>
         </div>

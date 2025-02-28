@@ -71,7 +71,7 @@ const Testimonials = () => {
         {testimonials.map((testimonial, index) => (
           <motion.div
             key={index}
-            className="p-6 bg-green-50 rounded-lg shadow-md text-center flex flex-col items-center"
+            className="p-6 bg-white rounded-lg shadow-md text-center flex flex-col items-center"
             whileHover={{ scale: 1.05 }}
           >
             <img

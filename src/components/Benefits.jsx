@@ -25,7 +25,7 @@ const Counter = ({ value }) => {
 
 const Benefits = () => {
   return (
-    <div className="w-full flex flex-wrap justify-between items-center bg-gray-100 p-6 rounded-lg shadow-lg">
+    <div className="w-full flex flex-wrap justify-between items-center p-6 rounded-lg shadow-lg">
       {benefits.map((item, index) => (
         <motion.div
           key={index}
