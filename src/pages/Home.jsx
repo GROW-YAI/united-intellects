@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { FaUserTie } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import Benefits from "../components/Benefits";
 import Investment from "../components/Investments";
 import ChatBox from "../components/ChatBox";
@@ -21,55 +23,39 @@ function Home() {
   }, []);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-      {/* Background Image Transition */}
-      <div style={{ position: "relative", width: "100%", height: "80vh", overflow: "hidden" }}>
+    <div className="flex flex-col min-h-screen">
+      {/* Hero Section with Background Image Transition */}
+      <div className="relative w-full h-[90vh] overflow-hidden flex flex-col items-center justify-center text-center px-6">
+        {/* Background Images */}
         {images.map((image, index) => (
           <div
             key={index}
+            className="absolute inset-0 w-full h-full bg-cover bg-center transition-opacity duration-1000"
             style={{
-              position: "absolute",
-              inset: "0",
-              transition: "opacity 1s ease-in-out",
-              opacity: index === currentImage ? 1 : 0,
               backgroundImage: `url(${image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              width: "100%",
-              height: "100%",
-              zIndex: index === currentImage ? 10 : 0,
+              opacity: index === currentImage ? 1 : 0,
             }}
           ></div>
         ))}
 
-        {/* Overlay Caption */}
-        <div
-          style={{
-            position: "absolute",
-            inset: "0",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: "rgba(0, 0, 0, 0.5)",
-            padding: "1.5rem",
-            textAlign: "center",
-          }}
-        >
-          <p style={{ color: "white", fontSize: "2rem", fontWeight: "bold" }}>
-            {[
-              "Restoring Ghana's Rivers for a Sustainable Future",
-              "Harnessing Clean Energy for a Greener Tomorrow",
-              "Empowering Communities Through Conservation",
-            ][currentImage]}
+        {/* Static Text */}
+        <div className="relative z-10">
+          <p className="text-white text-3xl md:text-4xl font-bold max-w-3xl">
+            Sustaining Ghana with clean energy, <br /> conservation, and river restoration.
           </p>
+
+          {/* Section Below Hero Text */}
+       
+
         </div>
       </div>
 
-      {/* Benefits Section */}
-      <div style={{ flexGrow: 1 }}>
+      {/* Content Sections */}
+      <div className="flex-grow">
         <Benefits />
       </div>
       <Investment />
+
       {/* Floating Chatbox */}
       <ChatBox />
     </div>
