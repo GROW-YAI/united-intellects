@@ -33,7 +33,8 @@ function Navbar() {
         </div>
       )}
 
-      <nav className="bg-yellow-500 text-white py-6 shadow-md">
+      {/* Fixed Navbar */}
+      <nav className="fixed top-0 left-0 w-full bg-yellow-500 text-white py-6 shadow-md z-40">
         <div className="container mx-auto flex justify-between items-center">
           {/* Logo */}
           <Link to="/" className="flex items-center">
@@ -104,6 +105,11 @@ function Navbar() {
           </div>
         )}
       </nav>
+
+      {/* Add padding to the top of the main content to account for the fixed navbar */}
+      <div className="pt-24">
+        {/* Your main content goes here */}
+      </div>
     </>
   );
 }
