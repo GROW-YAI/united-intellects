@@ -64,7 +64,7 @@ function Footer() {
                     </p>
                 </div>
 
-                {/* Subscribe Section */}
+                {/* Subscribe Section
                 <div>
                     <h2 className="text-base font-bold mb-2">Subscribe to Our Newsletter</h2>
                     <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2">
@@ -89,7 +89,7 @@ function Footer() {
                             {message}
                         </p>
                     )}
-                </div>
+                </div> */}
 
                 {/* Social Media Links */}
                 <div>
