@@ -23,7 +23,7 @@ function Navbar() {
     <>
       {/* Loading Overlay */}
       {loading && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
           <div className="relative">
             <img src={logo} alt="Loading Logo" className="h-20 w-20 animate-pulse rounded-full" />
             <div className="absolute inset-0 flex items-center justify-center">
@@ -76,11 +76,11 @@ function Navbar() {
               <button
                 key={item}
                 onClick={() => handleLinkClick(`/${item.toLowerCase()}`)}
-                className="relative hover:text-gray-400 transition-colors duration-300 group text-lg"
+                className="relative hover:text-gray-600 transition-colors duration-300 group text-lg"
                 disabled={loading} // Disable clicks while loading
               >
                 {item}
-                <span className="absolute left-0 bottom-0 h-1.5 bg-gray-400 w-0 group-hover:w-full transition-all duration-300"></span>
+                <span className="absolute left-0 bottom-0 h-1.5 bg-yellow-500 w-0 group-hover:w-full transition-all duration-300"></span>
               </button>
             ))}
           </div>
@@ -96,7 +96,7 @@ function Navbar() {
                   toggleMenu();
                   handleLinkClick(`/${item.toLowerCase()}`);
                 }}
-                className="block py-3 px-4 hover:bg-gray-800 hover:text-gray-400 transition-colors duration-300 text-lg w-full text-left"
+                className="block py-3 px-4 hover:bg-gray-600 hover:text-yellow-500 transition-colors duration-300 text-lg w-full text-left"
                 disabled={loading}
               >
                 {item}
