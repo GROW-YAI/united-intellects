@@ -95,16 +95,16 @@ function Footer() {
                 <div>
                     <h2 className="text-base font-bold mb-2">Follow Us</h2>
                     <div className="flex gap-4">
-                        <a href="https://www.facebook.com/UnitedIntellects" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        {/* <a href="https://www.facebook.com/UnitedIntellects" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                             <FaFacebook className="text-white hover:text-gray-200 text-2xl" />
                         </a>
                         <a href="https://twitter.com/UnitedIntellects" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
                             <FaTwitter className="text-white hover:text-gray-200 text-2xl" />
-                        </a>
-                        <a href="https://www.instagram.com/UnitedIntellects" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        </a> */}
+                        <a href="https://www.instagram.com/unitedintellect/?hl=en" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                             <FaInstagram className="text-white hover:text-gray-200 text-2xl" />
                         </a>
-                        <a href="https://www.tiktok.com/@UnitedIntellects" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                        <a href="https://www.tiktok.com/@united_intellect?_t=ZM-909v1rTJ6N9&_r=1" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
                             <FaTiktok className="text-white hover:text-gray-200 text-2xl" />
                         </a>
                     </div>
