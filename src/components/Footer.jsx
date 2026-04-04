@@ -58,7 +58,7 @@ function Footer() {
             <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6">
                 {/* About Section */}
                 <div>
-                    <h2 className="text-base font-bold mb-2">About Us</h2>
+                    <h2 className="text-base font-bold mb-2 text-left">About Us</h2>
                     <p className="text-sm">
                         United Intellects is committed to delivering high-quality content and updates. Stay connected with us!
                     </p>
