@@ -32,7 +32,13 @@ function App() {
     return () => clearTimeout(timer); // Cleanup timeout to prevent memory leaks
   }, []);
 
-  return loading ? <Loader /> : <RouterProvider router={router} />;
+  return loading ? (
+    <div className="flex items-center justify-center min-h-screen">
+      <Loader />
+    </div>
+  ) : (
+    <RouterProvider router={router} />
+  );
 }
 
 export default App;
